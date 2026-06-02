@@ -1,4 +1,4 @@
-import { initializeApp, getApps } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
@@ -11,8 +11,14 @@ const firebaseConfig = {
   appId: "1:755832745258:web:91a463564781bdd0c94253"
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
-const auth = getAuth(app);
+
+// Safe initialization of auth for Next.js SSR
+let auth: any = null;
+if (typeof window !== 'undefined') {
+  auth = getAuth(app);
+}
 
 export { app, db, auth };
+

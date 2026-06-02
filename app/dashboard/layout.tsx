@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-8">
           <h2 className="text-xl font-semibold text-slate-800 capitalize">
-            {pathname.split('/').pop() || 'Dashboard'}
+            {(pathname || '').split('/').pop() || 'Dashboard'}
           </h2>
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium text-slate-600" title={user.email || ''}>
