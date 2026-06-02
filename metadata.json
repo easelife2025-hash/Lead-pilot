@@ -1,0 +1,6 @@
+{
+  "name": "LeadPilot",
+  "description": "AI SaaS for real estate agents to recover lost WhatsApp leads.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
