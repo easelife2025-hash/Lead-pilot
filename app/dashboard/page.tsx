@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import type { Variants } from 'motion/react';
 import { 
   Bell, 
   Search, 
@@ -19,7 +20,7 @@ import { useAuth } from '@/components/auth-provider';
 import { db } from '@/lib/firebase';
 import { collection, query, where, onSnapshot } from 'firebase/firestore';
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -29,7 +30,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
 };
@@ -180,7 +181,7 @@ function StatCard({ title, value, trend, trendLabel, icon, color, delay }: any) 
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
-      }}
+      } as Variants}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm group cursor-default"
     >

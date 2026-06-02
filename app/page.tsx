@@ -6,8 +6,9 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, BrainCircuit, MessageCircle, BarChart3, Users, Zap, Shield, Play } from 'lucide-react';
 import { useAuth } from '@/components/auth-provider';
 import { useRouter } from 'next/navigation';
+import type { Variants } from 'motion/react';
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -15,7 +16,7 @@ const staggerContainer = {
   }
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
