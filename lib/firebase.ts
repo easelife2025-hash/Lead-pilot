@@ -3,12 +3,12 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBgrCccmCYUXyXvbFhaF5NocfnuWC_LCa4",
-  authDomain: "aura-84170.firebaseapp.com",
-  projectId: "aura-84170",
-  storageBucket: "aura-84170.firebasestorage.app",
-  messagingSenderId: "441749708484",
-  appId: "1:441749708484:web:b51de98ed7e32f67acf391"
+  apiKey: "AIzaSyBK9N0TSiQwOw7x7fg8Mqi0s9yvp4ZzoZo",
+  authDomain: "lead-pilot-24862.firebaseapp.com",
+  projectId: "lead-pilot-24862",
+  storageBucket: "lead-pilot-24862.firebasestorage.app",
+  messagingSenderId: "755832745258",
+  appId: "1:755832745258:web:91a463564781bdd0c94253"
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
