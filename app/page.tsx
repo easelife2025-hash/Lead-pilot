@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { auth } from '../lib/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, onAuthStateChanged } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
@@ -30,9 +30,10 @@ export default function Page() {
     try {
       // In iframes, signInWithPopup can sometimes be blocked, but we'll try it first
       await signInWithPopup(auth, provider);
-    } catch (error: any) {
-      console.error("Auth error:", error);
-      setStatus(`Failed: ${error.message}`);
+    } catch (error) {
+      const err = error as Error;
+      console.error("Auth error:", err);
+      setStatus(`Failed: ${err.message}`);
       setIsLoading(false);
     }
   };
@@ -83,7 +84,7 @@ export default function Page() {
                 <span className="font-bold block mb-1">Sign-in failed</span>
                 {status}
                 <br /><br />
-                <span className="block italic">Tip: If you get an iframe error or origin mismatch, please refresh and click "Open in New Tab" at the top right of the preview window. Also ensure this preview URL is added to Firebase Authorized Domains.</span>
+                <span className="block italic">Tip: If you get an iframe error or origin mismatch, please refresh and click &quot;Open in New Tab&quot; at the top right of the preview window. Also ensure this preview URL is added to Firebase Authorized Domains.</span>
               </p>
             )}
           </div>
