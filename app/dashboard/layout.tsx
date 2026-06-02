@@ -1,12 +1,38 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Home, Users, MessageSquare, Settings, LogOut, PieChart } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { auth } from '../../lib/firebase';
+import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        router.push('/');
+      } else {
+        setUser(currentUser);
+      }
+      setIsInitializing(false);
+    });
+    return () => unsubscribe();
+  }, [router]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      console.error("Sign out error", error);
+    }
+  };
 
   const navigation = [
     { name: 'Overview', href: '/dashboard', icon: Home },
@@ -15,6 +41,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { name: 'Insights', href: '/dashboard/insights', icon: PieChart },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
+
+  if (isInitializing || !user) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-slate-50">
+        <p className="text-slate-500 font-medium animate-pulse">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  const initials = user?.displayName
+    ? user.displayName.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2)
+    : 'U';
 
   return (
     <div className="flex h-screen bg-slate-50">
@@ -50,7 +88,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         <div className="p-4 border-t border-slate-800">
-          <button className="flex items-center gap-3 px-3 py-2 w-full text-left rounded-md text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+          <div className="mb-4 px-3">
+            <p className="text-sm font-medium text-white truncate">{user.displayName || 'User'}</p>
+            <p className="text-xs text-slate-500 truncate">{user.email}</p>
+          </div>
+          <button 
+            onClick={handleSignOut}
+            className="flex items-center gap-3 px-3 py-2 w-full text-left rounded-md text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors"
+          >
             <LogOut className="w-5 h-5" />
             Sign Out
           </button>
@@ -64,8 +109,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {pathname.split('/').pop() || 'Dashboard'}
           </h2>
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium text-slate-600">
-              JS
+            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium text-slate-600" title={user.email || ''}>
+              {initials}
             </div>
           </div>
         </header>
